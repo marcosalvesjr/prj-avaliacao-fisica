@@ -1,4 +1,4 @@
-import { initializeDatabase } from "@/database/initialieDatabase";
+import { initializeDatabase } from "@/database/initializeDatabase";
 import { Slot } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
 import "../styles/global.css";

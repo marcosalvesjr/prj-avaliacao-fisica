@@ -1,9 +1,12 @@
 import Button from "@/components/button";
 import { Input } from "@/components/input";
+import { AlunosDatabase } from "@/database/useAlunosDatabas";
 import { router } from "expo-router";
+import { useState } from "react";
 import { Text, View } from "react-native";
 
 export default function Index() {
+
   return (
     <View className="flex-1 justify-center items-center mt-40">
       <View className="flex-1">

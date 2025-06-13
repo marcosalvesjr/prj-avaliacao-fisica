@@ -1,46 +1,59 @@
-import { FlatList, Pressable, Text, View } from "react-native";
-import { Component } from "react";
+import { Alert, FlatList, Pressable, Text, View } from "react-native";
+import { useEffect, useState } from "react";
 import Button from "@/components/button";
 import { router } from "expo-router";
 import { Input } from "@/components/input";
+import { useAlunosDatabase, AlunosDatabase } from "@/database/useAlunosDatabas";
 
 type Props = {};
 
-type State = {
-  alunos: { id: number; nome: string }[];
-};
+export default function Alunos() {
+  const [aluno, setAluno] = useState("");
+  const [id, setId] = useState("");
+  const [alunos, setAlunos] = useState<AlunosDatabase[]>([]);
 
-export default class Alunos extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      alunos: [
-        { id: 1, nome: "Ana Silva" },
-        { id: 2, nome: "Bruno Costa" },
-        { id: 3, nome: "Carla Oliveira" },
-        { id: 4, nome: "Diego Santos" },
-        { id: 5, nome: "Érica Lima" },
-      ],
-    };
+  const alunosDatabase = useAlunosDatabase();
+
+  async function createAluno() {
+    try {
+      const response = await alunosDatabase.createAluno({
+        nome: aluno,
+      });
+      const novoAluno = {
+        id: parseInt(response.insertedRowId, 10),
+        nome: aluno,
+      };
+
+      Alert.alert(`Aluno cadastrado com o Id: ${response.insertedRowId}`);
+      list();
+    } catch (error) {
+      console.log(error);
+    }
   }
-  render() {
-    return (
-      <View className="mt-40 justify-center items-center">
-        <Input title="Buscar aluno" />
-        <Button title="Adicionar Aluno" onPress={()=>router.navigate('/cadastrarAluno')} />
-        <FlatList
-          data={this.state.alunos}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <Pressable
-              onPress={() => router.navigate(`alunos/aluno/${item.id}`)}
-            >
-              <Text>{item.nome}</Text>
-            </Pressable>
-          )}
-        />
-        <Button title="Voltar" onPress={() => router.back()} />
-      </View>
-    );
+
+  async function list() {
+    const response = await alunosDatabase.list();
+    setAlunos(response);
   }
+
+  useEffect(() => {
+    list();
+  }, []);
+
+  return (
+    <View className="mt-40 justify-center items-center">
+      <Input title="Cadastrar aluno" value={aluno} onChangeText={setAluno} />
+      <Button title="Adicionar Aluno" onPress={createAluno} />
+      <FlatList
+        data={alunos}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <Pressable onPress={() => router.navigate(`alunos/aluno/${item.id}`)}>
+            <Text>{item.nome}</Text>
+          </Pressable>
+        )}
+      />
+      <Button title="Voltar" onPress={() => router.back()} />
+    </View>
+  );
 }
