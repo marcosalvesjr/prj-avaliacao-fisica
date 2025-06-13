@@ -27,7 +27,7 @@ export default class Alunos extends Component<Props, State> {
     return (
       <View className="mt-40 justify-center items-center">
         <Input title="Buscar aluno" />
-        <Button title="Adicionar Aluno" />
+        <Button title="Adicionar Aluno" onPress={()=>router.navigate('/cadastrarAluno')} />
         <FlatList
           data={this.state.alunos}
           keyExtractor={(item) => item.id.toString()}
