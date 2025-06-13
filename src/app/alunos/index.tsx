@@ -14,15 +14,12 @@ export default function Alunos() {
 
   const alunosDatabase = useAlunosDatabase();
 
+  //CADASTRANDO ALUNO NOVO
   async function createAluno() {
     try {
       const response = await alunosDatabase.createAluno({
         nome: aluno,
       });
-      const novoAluno = {
-        id: parseInt(response.insertedRowId, 10),
-        nome: aluno,
-      };
 
       Alert.alert(`Aluno cadastrado com o Id: ${response.insertedRowId}`);
       list();
@@ -30,12 +27,12 @@ export default function Alunos() {
       console.log(error);
     }
   }
-
+  //LISTANDO ALUNOS
   async function list() {
     const response = await alunosDatabase.list();
     setAlunos(response);
   }
-
+  //ATUALIZANDO LISTA
   useEffect(() => {
     list();
   }, []);

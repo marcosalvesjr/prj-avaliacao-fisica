@@ -7,7 +7,7 @@ export type AlunosDatabase = {
 
 export function useAlunosDatabase() {
   const database = useSQLiteContext();
-
+  //CADASTRANDO NOVO ALUNO
   async function createAluno(data: Omit<AlunosDatabase, "id">) {
     const statement = await database.prepareAsync(
       "INSERT INTO alunos (nome) VALUES ($nome)"
@@ -26,13 +26,11 @@ export function useAlunosDatabase() {
       await statement.finalizeAsync();
     }
   }
-
+  //LISTANDO ALUNOS
   async function list() {
     const query = "SELECT * FROM alunos";
 
-    const response = await database.getAllAsync<AlunosDatabase>(
-      query
-    );
+    const response = await database.getAllAsync<AlunosDatabase>(query);
 
     return response;
   }
