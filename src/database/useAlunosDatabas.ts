@@ -37,6 +37,40 @@ export function useAlunosDatabase() {
 
     return response;
   }
-
-  return { createAluno, list };
+  //ATUALIZAR CADASTRO DE ALUNO
+  async function updateAluno(data: AlunosDatabase) {
+    const statement = await database.prepareAsync(
+      "UPDATE alunos SET name = $name WHERE id = $id "
+    );
+    try {
+      await statement.executeAsync({
+        $nome: data.nome,
+      });
+    } catch (error) {
+      throw error;
+    } finally {
+      await statement.finalizeAsync();
+    }
+  }
+  //REMOVER ALUNO
+  async function removeAluno(id: number) {
+    try {
+      await database.execAsync("DELETE FROM alunos WHERE id = " + id);
+    } catch (error) {
+      throw error;
+    }
+  }
+  //BUSCAR DADO DE ALUNO
+  async function getDataAluno(id: number) {
+    try {
+      const query = "SELECT * FROM alunos WHERE id = ?";
+      const response = await database.getFirstAsync<AlunosDatabase>(query, [
+        id,
+      ]);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+  return { createAluno, list, updateAluno, removeAluno, getDataAluno };
 }

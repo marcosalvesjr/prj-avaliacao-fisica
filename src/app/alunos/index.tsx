@@ -1,4 +1,11 @@
-import { Alert, FlatList, Pressable, Text, View } from "react-native";
+import {
+  Alert,
+  FlatList,
+  Pressable,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useEffect, useState } from "react";
 import Button from "@/components/button";
 import { router } from "expo-router";
@@ -23,6 +30,7 @@ export default function Alunos() {
       });
       if (response && response.insertedRowId) {
         Alert.alert(`Aluno cadastrado com o Id: ${response.insertedRowId}`);
+        setAluno("");
         list();
       }
     } catch (error) {
@@ -34,6 +42,18 @@ export default function Alunos() {
     const response = await alunosDatabase.list();
     setAlunos(response);
   }
+
+  //REMOVER ALUNO
+  async function removeAluno(id: number) {
+    try {
+      await alunosDatabase.removeAluno(id);
+      Alert.alert("Aluno removido com sucesso!");
+      list();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   //ATUALIZANDO LISTA
   useEffect(() => {
     list();
@@ -47,15 +67,25 @@ export default function Alunos() {
       </View>
 
       <FlatList
+        className="mb-5 h-96"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ gap: 10 }}
         data={alunos}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <Pressable
-            className="flex-row gap-3"
+            className="flex-row justify-between bg-slate-300 w-80 p-4 rounded-lg"
             onPress={() => router.navigate(`/alunos/aluno/${item.id}`)}
           >
-            <Text>ID: {item.id}</Text>
-            <Text>Nome: {item.nome}</Text>
+            <View className="flex-row gap-3">
+              <Text>ID: {item.id}</Text>
+              <Text>Nome: {item.nome}</Text>
+            </View>
+            <View>
+              <TouchableOpacity onPress={() => removeAluno(item.id)}>
+                <Text className="text-red-500 font-bold">Excluir</Text>
+              </TouchableOpacity>
+            </View>
           </Pressable>
         )}
       />

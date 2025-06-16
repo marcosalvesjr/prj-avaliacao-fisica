@@ -21,7 +21,7 @@ export default function CadastrarAluno() {
         data={alunos}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <Pressable onPress={() => router.navigate(`alunos/aluno/${item.id}`)}>
+          <Pressable onPress={() => router.navigate(`/alunos/aluno/${item.id}`)}>
             <Text>{item.nome}</Text>
           </Pressable>
         )}

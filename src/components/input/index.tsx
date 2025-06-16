@@ -10,6 +10,12 @@ export class Input extends Component<Props> {
     super(props);
   }
   render() {
-    return <TextInput className="border-b mb-4 border-slate-300 text-lg font-bold" placeholder={this.props.title} {...this.props} />;
+    return (
+      <TextInput
+        className="border-b mb-4 border-slate-300 w-60 text-lg font-bold"
+        placeholder={this.props.title}
+        {...this.props}
+      />
+    );
   }
 }
