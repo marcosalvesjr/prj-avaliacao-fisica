@@ -1,4 +1,5 @@
 import { useSQLiteContext } from "expo-sqlite";
+import { Alert } from "react-native";
 
 export type AlunosDatabase = {
   id: number;
@@ -13,13 +14,15 @@ export function useAlunosDatabase() {
       "INSERT INTO alunos (nome) VALUES ($nome)"
     );
     try {
-      const result = await statement.executeAsync({
-        $nome: data.nome,
-      });
-
-      const insertedRowId = result.lastInsertRowId.toLocaleString();
-
-      return { insertedRowId };
+      if (data.nome === "") {
+        return Alert.alert("Digite um nome para cadastrar o aluno");
+      } else {
+        const result = await statement.executeAsync({
+          $nome: data.nome,
+        });
+        const insertedRowId = result.lastInsertRowId.toLocaleString();
+        return { insertedRowId };
+      }
     } catch (error) {
       throw error;
     } finally {

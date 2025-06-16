@@ -4,6 +4,7 @@ import Button from "@/components/button";
 import { router } from "expo-router";
 import { Input } from "@/components/input";
 import { useAlunosDatabase, AlunosDatabase } from "@/database/useAlunosDatabas";
+import BtnAdicionar from "@/components/btnAdicionar";
 
 type Props = {};
 
@@ -20,9 +21,10 @@ export default function Alunos() {
       const response = await alunosDatabase.createAluno({
         nome: aluno,
       });
-
-      Alert.alert(`Aluno cadastrado com o Id: ${response.insertedRowId}`);
-      list();
+      if (response && response.insertedRowId) {
+        Alert.alert(`Aluno cadastrado com o Id: ${response.insertedRowId}`);
+        list();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -39,14 +41,21 @@ export default function Alunos() {
 
   return (
     <View className="mt-40 justify-center items-center">
-      <Input title="Cadastrar aluno" value={aluno} onChangeText={setAluno} />
-      <Button title="Adicionar Aluno" onPress={createAluno} />
+      <View className="flex-row items-center gap-5">
+        <Input title="Cadastrar aluno" value={aluno} onChangeText={setAluno} />
+        <BtnAdicionar title="+" onPress={createAluno} />
+      </View>
+
       <FlatList
         data={alunos}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <Pressable onPress={() => router.navigate(`alunos/aluno/${item.id}`)}>
-            <Text>{item.nome}</Text>
+          <Pressable
+            className="flex-row gap-3"
+            onPress={() => router.navigate(`/alunos/aluno/${item.id}`)}
+          >
+            <Text>ID: {item.id}</Text>
+            <Text>Nome: {item.nome}</Text>
           </Pressable>
         )}
       />
