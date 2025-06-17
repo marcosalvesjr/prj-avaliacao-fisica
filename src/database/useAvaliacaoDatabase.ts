@@ -30,10 +30,9 @@ export function useAvaliacaoDatabase() {
   }
 
   //LISTANDO AVALIACOES
-  async function list() {
-    const query = "SELECT * FROM avaliacoes";
-
-    const response = await database.getAllAsync<AvaliacaoDatabase>(query);
+  async function list(idAluno:number) {
+    const query = "SELECT * FROM avaliacoes WHERE aluno_id = ?";
+    const response = await database.getAllAsync<AvaliacaoDatabase>(query,[idAluno]);
     return response;
   }
 

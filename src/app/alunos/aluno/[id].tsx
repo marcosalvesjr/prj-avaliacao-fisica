@@ -1,4 +1,4 @@
-import { View, Text, Modal, FlatList } from "react-native";
+import { View, Text, Modal, FlatList, ViewComponent } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import Button from "@/components/button";
 
@@ -9,6 +9,7 @@ import {
   AvaliacaoDatabase,
   useAvaliacaoDatabase,
 } from "@/database/useAvaliacaoDatabase";
+import CardAvaliacao from "@/components/cardAvaliacao";
 
 export default function Alunos() {
   const [open, setOpen] = useState(false);
@@ -35,31 +36,36 @@ export default function Alunos() {
 
   useEffect(() => {
     async function listAvaliacoes() {
-      const response = await avaliacaoesDatabase.list();
+      const response = await avaliacaoesDatabase.list(alunoId);
       setAvaliacoes(response);
+      console.log(response);
     }
+
     listAvaliacoes();
   }, []);
-
   return (
     <>
       <View className="flex-1 mt-40 items-center justify-center">
         <View>
-          <Text className="text-2xl">
-            ID: {params.id} Nome: {data.nome}
-          </Text>
+          <Text className="text-2xl">{data.nome}</Text>
         </View>
         <View className="flex-1 p-5">
           <FlatList
+            showsVerticalScrollIndicator={false}
             contentContainerStyle={{ gap: 5 }}
-            style={{ height: 40 }}
             data={avaliacoes}
             keyExtractor={(item) => String(item.id)}
             renderItem={({ item }) => (
-              <Text className="bg-slate-300 p-2 text-xl rounded-md">
-                id aluno: {item.idAluno} data: {item.data} IMC: {item.imc} peso:
-                {item.peso} altura:{item.altura}
-              </Text>
+              <View>
+                {/** <Text className="bg-slate-300 p-2 text-xl rounded-md">
+                  id aluno: {item.idAluno}
+                </Text>
+                <Text>
+                  data: {item.data} IMC: {item.imc} peso:
+                  {item.peso} altura:{item.altura}
+                </Text>*/}
+                <CardAvaliacao data={item.data} />
+              </View>
             )}
           />
         </View>
@@ -82,7 +88,7 @@ export default function Alunos() {
               alunoId={alunoId}
               atualizaLista={() =>
                 avaliacaoesDatabase
-                  .list()
+                  .list(alunoId)
                   .then((response) => setAvaliacoes(response))
               }
             />
