@@ -11,7 +11,7 @@ export type AvaliacaoDatabase = {
 
 export function useAvaliacaoDatabase() {
   const database = useSQLiteContext();
-  
+
   //ADICIONANDO NOVA AVALIAÇÃO
   async function createAvaliacao(data: Omit<AvaliacaoDatabase, "id">) {
     const statement = await database.prepareAsync(
@@ -28,5 +28,14 @@ export function useAvaliacaoDatabase() {
 
     await statement.finalizeAsync();
   }
-  return { createAvaliacao };
+
+  //LISTANDO AVALIACOES
+  async function list() {
+    const query = "SELECT * FROM avaliacoes";
+
+    const response = await database.getAllAsync<AvaliacaoDatabase>(query);
+    return response;
+  }
+
+  return { createAvaliacao, list };
 }
