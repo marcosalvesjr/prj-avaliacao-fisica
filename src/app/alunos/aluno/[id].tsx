@@ -20,10 +20,10 @@ export default function Alunos() {
   const [avaliacoes, setAvaliacoes] = useState<AvaliacaoDatabase[]>([]);
   const params = useLocalSearchParams<{ id: string }>();
   const alunoId = Number(params.id);
-  //DB
+  //HOOKS BANCO DE DADOS
   const avaliacaoesDatabase = useAvaliacaoDatabase();
   const alunoDatabase = useAlunosDatabase();
-
+  //RECEBE DADOS DO ALUNO
   useEffect(() => {
     if (params.id) {
       alunoDatabase.getDataAluno(Number(params.id)).then((response) => {
@@ -33,12 +33,11 @@ export default function Alunos() {
       });
     }
   }, [params.id]);
-
+  //RECEBE DADOS E LISTA AS AVALIAÇÕES
   useEffect(() => {
     async function listAvaliacoes() {
       const response = await avaliacaoesDatabase.list(alunoId);
       setAvaliacoes(response);
-      console.log(response);
     }
 
     listAvaliacoes();
@@ -64,7 +63,7 @@ export default function Alunos() {
                   data: {item.data} IMC: {item.imc} peso:
                   {item.peso} altura:{item.altura}
                 </Text>*/}
-                <CardAvaliacao data={item.data} />
+                <CardAvaliacao idAvaliacao={item.id} data={item.data} />
               </View>
             )}
           />
