@@ -17,16 +17,28 @@ export function useAvaliacaoDatabase() {
     const statement = await database.prepareAsync(
       "INSERT INTO avaliacoes (aluno_id, data, peso, altura, imc) VALUES ($idAluno, $data, $peso, $altura, $imc)"
     );
+    try {
+      await statement.executeAsync({
+        $idAluno: data.idAluno,
+        $data: data.data,
+        $peso: data.peso,
+        $altura: data.altura,
+        $imc: data.imc,
+      });
+    } catch (error) {
+      throw error;
+    } finally {
+      await statement.finalizeAsync();
+    }
+  }
 
-    await statement.executeAsync({
-      $idAluno: data.idAluno,
-      $data: data.data,
-      $peso: data.peso,
-      $altura: data.altura,
-      $imc: data.imc,
-    });
-
-    await statement.finalizeAsync();
+  //REMOVENDO AVALIAÇÃO FÍSICA
+  async function removeAvaliacao(id: number) {
+    try {
+      await database.execAsync("DELETE FROM avaliacoes WHERE id =" + id);
+    } catch (error) {
+      throw error;
+    }
   }
 
   //LISTANDO AVALIACOES
@@ -47,5 +59,5 @@ export function useAvaliacaoDatabase() {
     return response;
   }
 
-  return { createAvaliacao, list, detailsAvaliacao };
+  return { createAvaliacao, list, detailsAvaliacao, removeAvaliacao };
 }
