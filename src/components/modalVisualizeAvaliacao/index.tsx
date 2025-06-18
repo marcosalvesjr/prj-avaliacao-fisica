@@ -4,10 +4,12 @@ import { View, Text, Modal } from "react-native";
 
 type ModalVisualizeAvaliacaoProp = {
   idAvaliacao: number;
+  nomeDoAluno: string;
 };
 
 export default function ModalVisualizeAvaliacao({
   idAvaliacao,
+  nomeDoAluno,
 }: ModalVisualizeAvaliacaoProp) {
   const id = idAvaliacao;
   const [avaliacao, setAvaliacao] = useState({
@@ -66,14 +68,31 @@ export default function ModalVisualizeAvaliacao({
     <View>
       <View className="gap-5">
         <View className="flex-row gap-10">
-          <Text>Data: {avaliacao.data}</Text>
-          <Text>Nome do aluno</Text>
+          <Text className="text-2xl">Data: {avaliacao.data}</Text>
+          <Text className="text-2xl">Nome: {nomeDoAluno}</Text>
         </View>
-        <View>
-          <Text>Altura: {avaliacao.altura}</Text>
-          <Text>Peso: {avaliacao.peso}</Text>
-          <Text>IMC: {avaliacao.imc}</Text>
-          <Text>{classificacao}</Text>
+        <View className="gap-2">
+          <View className="flex-row justify-between bg-slate-300 p-2 rounded-md">
+            <Text className="text-lg">Altura: </Text>
+            <Text className="font-bold text-lg">{avaliacao.altura} M</Text>
+          </View>
+          <View className="flex-row justify-between bg-slate-300 p-2 rounded-md">
+            <Text className="text-lg">Peso: </Text>
+            <Text className="font-bold text-lg">{avaliacao.peso} Kg</Text>
+          </View>
+          <View className="flex-row justify-between bg-slate-300 p-2 rounded-md">
+            <Text className="text-lg">IMC: </Text>
+            <Text
+              className={`font-bold text-lg ${avaliacao.imc > 25 || avaliacao.imc < 18 ? "text-red-500" : "text-green-500"}`}
+            >
+              {avaliacao.imc}
+            </Text>
+          </View>
+          <Text
+            className={`font-bold text-lg ${avaliacao.imc > 25 || avaliacao.imc < 18 ? "text-red-500" : "text-green-500"}`}
+          >
+            {classificacao}
+          </Text>
         </View>
       </View>
     </View>

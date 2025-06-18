@@ -13,13 +13,15 @@ import Button from "../button";
 type CardAvaliacaoProps = TouchableOpacityProps & {
   idAvaliacao:number,
   data: string;
+  nomeAluno:string
 };
-export default function CardAvaliacao({ idAvaliacao, data }: CardAvaliacaoProps) {
+export default function CardAvaliacao({ idAvaliacao, data, nomeAluno }: CardAvaliacaoProps) {
   const [openModal, setOpenModal] = useState(false);
+  const aluno = nomeAluno;
+  
   return (
     <View className="bg-slate-300 p-5 rounded-md flex-row justify-between gap-20">
       <View>
-        <Text className="text-xl">ID: {idAvaliacao}</Text>
         <Text className="text-xl">Data: {data}</Text>
       </View>
       <View className="flex-row gap-5">
@@ -32,7 +34,7 @@ export default function CardAvaliacao({ idAvaliacao, data }: CardAvaliacaoProps)
       </View>
       <Modal animationType="slide" visible={openModal}>
         <View className="flex-1 justify-center items-center gap-5">
-          <ModalVisualizeAvaliacao idAvaliacao={idAvaliacao} />
+          <ModalVisualizeAvaliacao idAvaliacao={idAvaliacao} nomeDoAluno={aluno} />
           <Button title="Fechar" onPress={() => setOpenModal(false)} />
         </View>
       </Modal>

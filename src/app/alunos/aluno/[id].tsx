@@ -63,7 +63,7 @@ export default function Alunos() {
                   data: {item.data} IMC: {item.imc} peso:
                   {item.peso} altura:{item.altura}
                 </Text>*/}
-                <CardAvaliacao idAvaliacao={item.id} data={item.data} />
+                <CardAvaliacao nomeAluno={data.nome} idAvaliacao={item.id} data={item.data} />
               </View>
             )}
           />
@@ -85,6 +85,7 @@ export default function Alunos() {
           <View className="bg-white p-9 rounded-xl w-4/5 items-center">
             <ModalAvaliacao
               alunoId={alunoId}
+              
               atualizaLista={() =>
                 avaliacaoesDatabase
                   .list(alunoId)
