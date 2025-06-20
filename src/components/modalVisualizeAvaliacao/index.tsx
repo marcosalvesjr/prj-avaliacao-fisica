@@ -67,7 +67,7 @@ export default function ModalVisualizeAvaliacao({
   return (
     <View>
       <View className="gap-5">
-        <View className="flex-row gap-10">
+        <View className="flex-row-reverse gap-10">
           <Text className="text-2xl">Data: {avaliacao.data}</Text>
           <Text className="text-2xl">Nome: {nomeDoAluno}</Text>
         </View>
@@ -88,11 +88,14 @@ export default function ModalVisualizeAvaliacao({
               {avaliacao.imc}
             </Text>
           </View>
-          <Text
-            className={`font-bold text-lg ${avaliacao.imc > 25 || avaliacao.imc < 18 ? "text-red-500" : "text-green-500"}`}
-          >
-            {classificacao}
-          </Text>
+          <View className="flex-row justify-between bg-slate-300 p-2 rounded-md">
+            <Text className="text-lg">Classificação</Text>
+            <Text
+              className={`font-bold text-lg ${avaliacao.imc > 25 || avaliacao.imc < 18 ? "text-red-500" : "text-green-500"}`}
+            >
+              {classificacao}
+            </Text>
+          </View>
         </View>
       </View>
     </View>

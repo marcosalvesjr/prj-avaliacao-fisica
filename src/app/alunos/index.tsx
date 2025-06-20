@@ -60,6 +60,7 @@ export default function Alunos() {
   }, []);
 
   return (
+    
     <View className="mt-40 justify-center items-center">
       <View className="flex-row items-center gap-5">
         <Input title="Cadastrar aluno" value={aluno} onChangeText={setAluno} />
@@ -67,7 +68,7 @@ export default function Alunos() {
       </View>
 
       <FlatList
-        className="mb-5 h-96"
+        className="mb-5"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ gap: 10 }}
         data={alunos}
@@ -78,8 +79,8 @@ export default function Alunos() {
             onPress={() => router.navigate(`/alunos/aluno/${item.id}`)}
           >
             <View className="flex-row gap-3">
-              <Text>ID: {item.id}</Text>
-              <Text>Nome: {item.nome}</Text>
+              <Text >ID: {item.id}</Text>
+              <Text >Nome: {item.nome}</Text>
             </View>
             <View>
               <TouchableOpacity onPress={() => removeAluno(item.id)}>
