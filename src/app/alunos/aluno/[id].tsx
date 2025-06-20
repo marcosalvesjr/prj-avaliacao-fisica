@@ -50,8 +50,6 @@ export default function Alunos() {
     listAvaliacoes();
   }, [avaliacoes]);
 
- 
-
   return (
     <>
       <View className="flex-1 mt-40 items-center justify-center">
@@ -59,21 +57,30 @@ export default function Alunos() {
           <Text className="text-2xl">{data.nome}</Text>
         </View>
         <View className="flex-1 p-5">
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ gap: 5 }}
-            data={avaliacoes}
-            keyExtractor={(item) => String(item.id)}
-            renderItem={({ item }) => (
-              <View>
-                <CardAvaliacao
-                  nomeAluno={data.nome}
-                  idAvaliacao={item.id}
-                  data={item.data}
-                />
-              </View>
-            )}
-          />
+          {avaliacoes.length === 0 ? (
+            <View className="items-center">
+              <Text className="text-xl">Nenhuma avaliação cadastrada</Text>
+              <Text className="text-xl">
+                Precione o botão "Nova avaliação" para começar
+              </Text>
+            </View>
+          ) : (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ gap: 5 }}
+              data={avaliacoes}
+              keyExtractor={(item) => String(item.id)}
+              renderItem={({ item }) => (
+                <View>
+                  <CardAvaliacao
+                    nomeAluno={data.nome}
+                    idAvaliacao={item.id}
+                    data={item.data}
+                  />
+                </View>
+              )}
+            />
+          )}
         </View>
         <View className="flex-1">
           <Button

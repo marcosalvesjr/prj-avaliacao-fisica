@@ -12,7 +12,7 @@ export class Input extends Component<Props> {
   render() {
     return (
       <TextInput
-        className="border-b mb-4 border-slate-300 w-60 text-lg font-bold"
+        className="border-b mb-4 border-slate-300 w-[80%] text-lg font-bold"
         placeholder={this.props.title}
         {...this.props}
       />
