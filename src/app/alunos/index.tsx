@@ -13,11 +13,9 @@ import { Input } from "@/components/input";
 import { useAlunosDatabase, AlunosDatabase } from "@/database/useAlunosDatabas";
 import BtnAdicionar from "@/components/btnAdicionar";
 
-type Props = {};
 
 export default function Alunos() {
   const [aluno, setAluno] = useState("");
-  const [id, setId] = useState("");
   const [alunos, setAlunos] = useState<AlunosDatabase[]>([]);
 
   const alunosDatabase = useAlunosDatabase();
@@ -60,7 +58,6 @@ export default function Alunos() {
   }, []);
 
   return (
-    
     <View className="mt-40 justify-center items-center">
       <View className="flex-row items-center gap-5">
         <Input title="Cadastrar aluno" value={aluno} onChangeText={setAluno} />
@@ -70,27 +67,29 @@ export default function Alunos() {
       <FlatList
         className="mb-5"
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ gap: 10 }}
+        contentContainerStyle={{ gap: 10, alignItems: "center" }}
         data={alunos}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <Pressable
-            className="flex-row justify-between bg-slate-300 w-80 p-4 rounded-lg"
-            onPress={() => router.navigate(`/alunos/aluno/${item.id}`)}
-          >
+          <View className="flex-row justify-between bg-slate-300 w-[95%] p-4 rounded-lg items-center">
             <View className="flex-row gap-3">
-              <Text >ID: {item.id}</Text>
-              <Text >Nome: {item.nome}</Text>
+              <Text>ID: {item.id}</Text>
+              <Text>Nome: {item.nome}</Text>
             </View>
             <View>
+              <TouchableOpacity
+                onPress={() => router.navigate(`/alunos/aluno/${item.id}`)}
+              >
+                <Text className="text-blue-500 font-bold">Visualizar</Text>
+              </TouchableOpacity>
               <TouchableOpacity onPress={() => removeAluno(item.id)}>
                 <Text className="text-red-500 font-bold">Excluir</Text>
               </TouchableOpacity>
             </View>
-          </Pressable>
+          </View>
         )}
       />
-      <Button title="Voltar" onPress={() => router.back()} />
+      <Button title="Sair" onPress={() => router.replace("/")} />
     </View>
   );
 }

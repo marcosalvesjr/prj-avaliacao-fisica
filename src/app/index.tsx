@@ -15,7 +15,7 @@ export default function Index() {
       <View className="flex-1 bg-slate-100 w-[100%] p-5 justify-center">
         <Input title="Digite seu nome" />
         <Input title="Digite sua senha" />
-        <Button title="Entrar" onPress={() => router.navigate("/alunos")} />
+        <Button title="Entrar" onPress={() => router.replace("/alunos")} />
       </View>
     </View>
   );
