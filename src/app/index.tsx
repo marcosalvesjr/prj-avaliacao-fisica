@@ -2,22 +2,25 @@ import Button from "@/components/button";
 import { Input } from "@/components/input";
 import { AlunosDatabase } from "@/database/useAlunosDatabas";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Text, TextInput, View } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { ILoginSchema, loginSchema } from "@/utils/schema/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AuthContext } from "@/utils/authContext";
 
 export default function Index() {
+  const authContext = useContext(AuthContext);
   const {
     control,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<ILoginSchema>({ resolver: zodResolver(loginSchema) });
+  } = useForm<ILoginSchema>({ resolver: zodResolver(loginSchema), mode:"onChange" });
 
   async function onHandleSubmit(data: ILoginSchema) {
     console.log(data.email);
     console.log(data.password);
+    await authContext.logIn(data.email, data.password);
   }
   console.log(errors.email?.message);
   console.log(errors.password?.message);
@@ -39,6 +42,9 @@ export default function Index() {
             />
           )}
         />
+        {errors.email?.message && (
+          <Text className="text-red-500">{errors.email.message}</Text>
+        )}
         <Controller
           name="password"
           control={control}
@@ -50,6 +56,9 @@ export default function Index() {
             />
           )}
         />
+        {errors.password?.message && (
+          <Text className="text-red-500">{errors.password.message}</Text>
+        )}
         {/*    
         <Input title="Digite seu nome" />
         <Input title="Digite sua senha" />

@@ -2,7 +2,7 @@ export const mockUsers = [
   {
     id: 4,
     email: "teste@email.com",
-    password: "123456",
+    password: "teste123",
   },
   {
     id: 1,
