@@ -59,5 +59,11 @@ export function useAvaliacaoDatabase() {
     return response;
   }
 
-  return { createAvaliacao, list, detailsAvaliacao, removeAvaliacao };
+  async function listAll() {
+    const query = "SELECT * FROM avaliacoes";
+    const response = await database.getAllAsync<AvaliacaoDatabase>(query);
+    return response;
+  }
+
+  return { createAvaliacao, list, detailsAvaliacao, removeAvaliacao, listAll };
 }
