@@ -1,6 +1,7 @@
 import { AuthContext } from "@/utils/authContext";
 import { Redirect, Tabs } from "expo-router";
 import { useContext } from "react";
+import { SquareActivity, Users } from "lucide-react-native";
 
 export default function Layout() {
   const authContext = useContext(AuthContext);
@@ -16,10 +17,19 @@ export default function Layout() {
   console.log("isLoggedIn:", authContext.isLoggedIn);
   return (
     <Tabs screenOptions={{ headerShown: false }}>
-      <Tabs.Screen name="alunos/index" options={{ title: "Alunos" }} />
+      <Tabs.Screen
+        name="alunos/index"
+        options={{
+          title: "Alunos",
+          tabBarIcon: () => <Users size={25} color={"red"} />,
+        }}
+      />
       <Tabs.Screen
         name="alunos/avaliacoes/index"
-        options={{ title: "Avaliações" }}
+        options={{
+          title: "Avaliações",
+          tabBarIcon: () => <SquareActivity size={25} color={"red"} />,
+        }}
       />
       <Tabs.Screen name="alunos/aluno/[id]" options={{ href: null }} />
     </Tabs>
