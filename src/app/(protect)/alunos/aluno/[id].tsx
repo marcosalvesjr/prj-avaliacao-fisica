@@ -96,7 +96,7 @@ export default function Alunos() {
 
       <Modal visible={open} animationType="slide" transparent={true}>
         <View className="flex-1 justify-center items-center bg-black/60">
-          <View className="bg-white p-9 rounded-xl w-4/5 items-center">
+          <View className="bg-white p-10 rounded-xl w-[90%] items-center">
             <ModalAvaliacao
               alunoId={alunoId}
               atualizaLista={() =>

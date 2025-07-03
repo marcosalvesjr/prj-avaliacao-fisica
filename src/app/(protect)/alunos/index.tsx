@@ -6,15 +6,16 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Button from "@/components/button";
 import { router } from "expo-router";
 import { Input } from "@/components/input";
 import { useAlunosDatabase, AlunosDatabase } from "@/database/useAlunosDatabas";
 import BtnAdicionar from "@/components/btnAdicionar";
-
+import { AuthContext } from "@/utils/authContext";
 
 export default function Alunos() {
+  const authContext = useContext(AuthContext);
   const [aluno, setAluno] = useState("");
   const [alunos, setAlunos] = useState<AlunosDatabase[]>([]);
 
@@ -50,6 +51,10 @@ export default function Alunos() {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  function handleLogOut() {
+    authContext.logOut();
   }
 
   //ATUALIZANDO LISTA
@@ -89,7 +94,7 @@ export default function Alunos() {
           </View>
         )}
       />
-      <Button title="Sair" onPress={() => router.replace("/")} />
+      <Button title="Sair" onPress={handleLogOut} />
     </View>
   );
 }

@@ -59,7 +59,7 @@ export default function ModalAvaliacao({ alunoId, atualizaLista }: ModalProps) {
           onChangeText={setAltura}
         />
       </View>
-      <View>
+      <View className="mb-5">
         <Button title="Salvar" onPress={createAvalicao} />
       </View>
     </View>

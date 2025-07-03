@@ -1,5 +1,5 @@
 import { initializeDatabase } from "@/database/initializeDatabase";
-import { Slot, Stack } from "expo-router";
+import { Redirect, Slot, Stack } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
 import "../styles/global.css";
 import { StatusBar } from "react-native";
@@ -10,7 +10,7 @@ export default function Layout() {
     <SQLiteProvider databaseName="myDatabase.db" onInit={initializeDatabase}>
       <AuthProvider>
         <StatusBar hidden={true} />
-        <Stack screenOptions={{ headerShown: false }} />
+        <Stack screenOptions={{ headerShown: false }}></Stack>
       </AuthProvider>
     </SQLiteProvider>
   );
