@@ -63,16 +63,20 @@ export default function Alunos() {
   }, []);
 
   return (
-    <View className="mt-40 justify-center items-center">
+    <View className="flex-1 px-4 py-8 items-center mt-10">
       <View className="flex-row items-center gap-5">
         <Input title="Cadastrar aluno" value={aluno} onChangeText={setAluno} />
         <BtnAdicionar title="+" onPress={createAluno} />
       </View>
 
       <FlatList
-        className="mb-5"
+        className="flex-1 mb-4"
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ gap: 10, alignItems: "center" }}
+        contentContainerStyle={{
+          paddingBottom: 20,
+          gap: 10,
+          alignItems: "center",
+        }}
         data={alunos}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
