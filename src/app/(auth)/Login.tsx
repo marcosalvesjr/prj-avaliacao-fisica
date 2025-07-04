@@ -63,7 +63,7 @@ export default function Login() {
         <View className="flex-1 bg-slate-500 w-[100%]  justify-center items-center">
           <Text>LOGO</Text>
         </View>
-        <View className="flex-1 bg-slate-100 w-[100%] ml-20  justify-center">
+        <View className="flex-1 w-[100%] ml-20  justify-center">
           <Controller
             name="email"
             control={control}

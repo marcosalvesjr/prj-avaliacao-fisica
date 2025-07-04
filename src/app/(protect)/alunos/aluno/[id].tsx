@@ -48,7 +48,7 @@ export default function Alunos() {
     }
 
     listAvaliacoes();
-  }, [avaliacoes]);
+  }, []);
 
   return (
     <>

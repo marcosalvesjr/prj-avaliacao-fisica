@@ -25,13 +25,14 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="alunos/avaliacoes/index"
+        name="avaliacoes/index"
         options={{
           title: "Avaliações",
           tabBarIcon: () => <SquareActivity size={25} color={"red"} />,
         }}
       />
       <Tabs.Screen name="alunos/aluno/[id]" options={{ href: null }} />
+      <Tabs.Screen name="avaliacoes/avaliacao/[id]" options={{ href: null }} />
     </Tabs>
   );
 }

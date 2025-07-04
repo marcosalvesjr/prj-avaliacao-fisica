@@ -10,7 +10,8 @@ export default function Layout() {
     <SQLiteProvider databaseName="myDatabase.db" onInit={initializeDatabase}>
       <AuthProvider>
         <StatusBar hidden={true} />
-        <Stack screenOptions={{ headerShown: false }}></Stack>
+        {/* <Stack screenOptions={{ headerShown: false }}></Stack> */}
+        <Slot />
       </AuthProvider>
     </SQLiteProvider>
   );

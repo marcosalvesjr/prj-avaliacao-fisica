@@ -5,6 +5,7 @@ import {
 import { useEffect, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { Eye, Trash } from "lucide-react-native";
+import { router } from "expo-router";
 
 export default function Avaliacoes() {
   const [avaliacoes, setAvaliacoes] = useState<AvaliacaoDatabase[]>([]);
@@ -35,7 +36,11 @@ export default function Avaliacoes() {
               <Text>Data: {item.data}</Text>
             </View>
             <View className="flex-row gap-3">
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  router.navigate(`/avaliacoes/avaliacao/${item.id}`)
+                }
+              >
                 <Eye size={25} color={"#3B82F6"} />
               </TouchableOpacity>
               <TouchableOpacity>

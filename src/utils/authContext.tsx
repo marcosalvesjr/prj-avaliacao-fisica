@@ -1,5 +1,11 @@
 import { useRouter } from "expo-router";
-import { createContext, PropsWithChildren, useEffect, useState } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { mockUsers } from "./mock/users";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -23,8 +29,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const router = useRouter();
 
   const AUTH_STATE_KEY = "authState";
+  //DEFINE TEMPO DE DURAÇÃO DA SESSAO
+  const SESSION_DURATION = 60 * 1000;
 
-  const storeAuthState = async (newState: { isLoggedIn: boolean }) => {
+  const storeAuthState = async (newState: {
+    isLoggedIn: boolean;
+    expirationTime: number;
+  }) => {
     try {
       await AsyncStorage.setItem(AUTH_STATE_KEY, JSON.stringify(newState));
     } catch (err) {
@@ -37,7 +48,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
       (u) => u.email === email && u.password === password
     );
     if (user) {
-      await storeAuthState({ isLoggedIn: true });
+      const expirationTime = Date.now() + SESSION_DURATION;
+      await storeAuthState({ isLoggedIn: true, expirationTime });
       setIsLoggedIn(true);
       router.replace("/(protect)/alunos");
       return true;
@@ -49,7 +61,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   const logOut = () => {
     setIsLoggedIn(false);
-    storeAuthState({ isLoggedIn: false });
+    storeAuthState({ isLoggedIn: false, expirationTime: 0 });
     router.replace("/(auth)/Login");
   };
 
@@ -57,12 +69,18 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const loadAuthState = async () => {
       try {
         const authState = await AsyncStorage.getItem(AUTH_STATE_KEY);
-        console.log("Estado parseado:", authState);
         if (authState) {
           const parsedState = JSON.parse(authState);
-          console.log("Estado parseado:", parsedState);
-          
-          setIsLoggedIn(parsedState.isLoggedIn);
+          if (
+            parsedState.isLoggedIn &&
+            parsedState.expirationTime &&
+            Date.now() < parsedState.expirationTime
+          ) {
+            setIsLoggedIn(parsedState.isLoggedIn);
+          } else {
+            await storeAuthState({ isLoggedIn: false, expirationTime: 0 });
+            setIsLoggedIn(false);
+          }
         }
       } catch (error) {
         console.log(error);
