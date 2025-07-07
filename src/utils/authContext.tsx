@@ -31,7 +31,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const AUTH_STATE_KEY = "authState";
 
   //DEFINE TEMPO DE DURAÇÃO DA SESSAO
-  const SESSION_DURATION = 60 * 10000;
+  const SESSION_DURATION = 0.5;
 
   const storeAuthState = async (newState: {
     isLoggedIn: boolean;
@@ -89,7 +89,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
           console.log("diffInMinutes: ", diffInMinutes);
           console.log("minutos", diffInMinutes);
 
-          if (diffInMinutes >= 0.5) {
+          if (diffInMinutes >= SESSION_DURATION) {
             alert("sessão expirada");
             logOut();
           }
