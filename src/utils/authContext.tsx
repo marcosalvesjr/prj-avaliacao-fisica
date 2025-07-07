@@ -29,14 +29,21 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const router = useRouter();
 
   const AUTH_STATE_KEY = "authState";
+
   //DEFINE TEMPO DE DURAÇÃO DA SESSAO
-  const SESSION_DURATION = 60 * 1000;
+  const SESSION_DURATION = 60 * 10000;
 
   const storeAuthState = async (newState: {
     isLoggedIn: boolean;
-    expirationTime: number;
+    timestamp: number;
   }) => {
     try {
+      //adicionando timestamp no authstate
+      // const authWithTimestamp = { ...newState, timestamp: Date.now() };
+      // await AsyncStorage.setItem(
+      //   AUTH_STATE_KEY,
+      //   JSON.stringify(authWithTimestamp)
+      // );
       await AsyncStorage.setItem(AUTH_STATE_KEY, JSON.stringify(newState));
     } catch (err) {
       console.log(err);
@@ -48,8 +55,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
       (u) => u.email === email && u.password === password
     );
     if (user) {
-      const expirationTime = Date.now() + SESSION_DURATION;
-      await storeAuthState({ isLoggedIn: true, expirationTime });
+      const timestamp = Date.now();
+      await storeAuthState({ isLoggedIn: true, timestamp });
       setIsLoggedIn(true);
       router.replace("/(protect)/alunos");
       return true;
@@ -61,9 +68,36 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   const logOut = () => {
     setIsLoggedIn(false);
-    storeAuthState({ isLoggedIn: false, expirationTime: 0 });
+    storeAuthState({ isLoggedIn: false, timestamp: 0 });
     router.replace("/(auth)/Login");
   };
+
+  //A CADA 10 SEGUNDOS EXECUTA A FUNÇÃO
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const value = await AsyncStorage.getItem(AUTH_STATE_KEY);
+      console.log(value);
+      if (value) {
+        const auth = JSON.parse(value);
+        if (auth.isLoggedIn) {
+          const lastLogin = new Date(auth.timestamp);
+          const now = new Date();
+          console.log("Data atual", now);
+
+          const diffInMs = now.getTime() - lastLogin.getTime();
+          const diffInMinutes = diffInMs / (1000 * 60);
+          console.log("diffInMinutes: ", diffInMinutes);
+          console.log("minutos", diffInMinutes);
+
+          if (diffInMinutes >= 0.5) {
+            alert("sessão expirada");
+            logOut();
+          }
+        }
+      }
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const loadAuthState = async () => {
@@ -71,14 +105,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
         const authState = await AsyncStorage.getItem(AUTH_STATE_KEY);
         if (authState) {
           const parsedState = JSON.parse(authState);
-          if (
-            parsedState.isLoggedIn &&
-            parsedState.expirationTime &&
-            Date.now() < parsedState.expirationTime
-          ) {
+          if (parsedState.isLoggedIn) {
             setIsLoggedIn(parsedState.isLoggedIn);
           } else {
-            await storeAuthState({ isLoggedIn: false, expirationTime: 0 });
+            await storeAuthState({ isLoggedIn: false, timestamp: 0 });
             setIsLoggedIn(false);
           }
         }
